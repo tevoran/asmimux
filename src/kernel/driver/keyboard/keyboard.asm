@@ -1,4 +1,4 @@
-;    the keyboarddriver of tevopsys
+;    the keyboarddriver of ASMIMUX
 ;
 ;
 ;global function
