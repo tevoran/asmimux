@@ -1,0 +1,4 @@
+timeout 5
+title ASMIMUX
+kernel /kernel/kernel.elf
+boot

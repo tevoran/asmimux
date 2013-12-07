@@ -1,0 +1,14 @@
+If you are looking for something to do at our OS look at this file :).
+If you a have reached a target delete it from the list below.
+
+Actual todos are:
+-New functions for the darkblackAPI
+-New Exceptionhandler, because I/we have not enough
+-Create a valid libc above the darkblackAPI
+-improve paging
+-more keyboardlayouts and a better keyboard driver
+-implement linuxsyscalls
+-floppy driver=======
+-more keyboardlayouts and a better keyboard driver
+-improve floppy_driver
+-implement linux-ABI

@@ -1,0 +1,81 @@
+implemented functions of the darkblackAPI in tevOpSys
+
+the darkblackAPI uses the interrupt 0x31
+
+
+;Process functions
+ah=0x00
+
+    ;taskchange
+    al=0x01
+    
+;CLI based functions
+ah=0x01
+    
+    ;printchar
+    al=0x00
+        bl=ASCII Code for the Char that is printed on the screen
+
+    ;cls
+    al=0x01
+
+;Keyboard functions
+ah=0x04
+
+    ;get scancode
+    al=0x00
+        result:
+        bl=scancode
+
+    ;get ascii code
+    al=0x01
+        result:
+        bl=asciicode
+	
+;Memory functions
+ah=0x23
+
+    ;memset function
+    al=0x00
+        edi=targetoffset
+	ecx=times of repetition
+	al=byte which is written in the memorycontext
+
+    ;memcopy function
+    al=0x01
+        esi=startoffset
+	edi=targetoffset
+	ecx=number of bytes, which will be copied
+	
+    ;memcompare function
+    al=0x02
+        esi=offset1
+	edi=offset2
+	ecx=number of bytes, which are compared
+	
+	result:
+	eax=0x00000001 if equal
+	eax=0x00000000 if not equal
+    al=1
+        bl=asciicode
+;memory functions
+ah=23
+	;memset
+	al=0
+	ecx=byteanzahl
+	edi= startadresse
+	ebx= byte
+	
+	;memcpy
+	al=1
+	ecx= byteanzahl
+	esi= source
+	edi dest
+	
+	;memcmp
+	al=2
+	ecx = bytezahl
+	esi=source
+	edi = dest
+	eax = 1 wenn gleich, 0 wenn ungleich
+	

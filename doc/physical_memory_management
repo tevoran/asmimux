@@ -1,0 +1,6 @@
+The function pmm_init inits the physical memory management, which is the most basic memory management.
+pmm_init creates a bitmap for the whole installed memory of the PC and marks the first MiB and the kernel
+as used.
+
+The function pmm_alloc allocs a 4KiB page of RAM and gives as return value the offset of the page in the
+register eax. If the return value is 0xFFFFFFFF then there is now free page left.
