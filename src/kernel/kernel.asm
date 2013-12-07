@@ -22,6 +22,7 @@ extern init_isa_dma
 extern floppy_init
 extern floppy_read
 extern lsn
+extern reboot
 
 ;extern variables
 extern gdtp
@@ -133,6 +134,13 @@ mov edx,0x00000010
 call lsn
 ;call floppy_read
 
+;reboot after hitting a key
+	mov esi,reboot_text
+	mov bl,20
+	call cll
+call kprint
+
+call reboot
 
 jmp $
 end_kernel:
@@ -153,6 +161,7 @@ section .data
     paging_ready db 'mapped 4MiB RAM',0
     keyboard_init_text db 'init KEYBOARD',0
     keyboard_init_ready db 'KEYBOARD ready',0
+    reboot_text db 'reboot after hitting space',0
     
     ;----Variables
     multibootstructure_offset dd 0
