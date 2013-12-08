@@ -25,6 +25,8 @@ ah=0x04
     ;get scancode
     al=0x00
         result:
+	al=0x01 if a key was pressed
+	al=0x00 if nothing happened
         bl=scancode
 
     ;get ascii code

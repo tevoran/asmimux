@@ -8,7 +8,9 @@ Actual todos are:
 -improve paging
 -more keyboardlayouts and a better keyboard driver
 -implement linuxsyscalls
--floppy driver=======
+-floppy driver
+
+=======
 -more keyboardlayouts and a better keyboard driver
 -improve floppy_driver
 -implement linux-ABI
