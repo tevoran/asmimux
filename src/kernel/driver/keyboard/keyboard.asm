@@ -9,7 +9,7 @@ extern eoi
 extern print_hex
 
 ;extern variables
-extern scancode
+extern scancode ;in darkblackapi.asm
 extern ascii.api
 extern scancode_ger
 
