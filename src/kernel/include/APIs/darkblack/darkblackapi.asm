@@ -11,6 +11,7 @@ global darkblack
 ;global variables
 global scancode
 global ascii.api
+
 section .text
 darkblack:
         push bp
@@ -114,9 +115,22 @@ jmp darkblack.end
 	jmp darkblack.end
 	
     ;get scancode
-    ah04.al00:
-    mov bl,byte[scancode]
+    ah04.al00
+	;checked if something since last hit happened
+		mov al,byte[old_scancode]
+		cmp al,bl
+	jz no_hit
+		mov al,0x01
+		
+	set_scancode:
+	mov bl,byte[scancode] ;gives the scancode
+	
+	mov byte[old_scancode],bl		
     jmp darkblack.end
+    
+		no_hit:
+		xor al,al
+		jmp set_scancode
     
     ;get ascii code
     ah04.al01:
@@ -130,3 +144,4 @@ bss:
     textpointer resb 2
     scancode resb 1
     ascii.api resb 1
+    old_scancode resb 1

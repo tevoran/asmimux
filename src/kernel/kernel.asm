@@ -134,15 +134,26 @@ mov edx,0x00000010
 call lsn
 ;call floppy_read
 
-;reboot after hitting a key
+;reboot after hitting space
 	mov esi,reboot_text
 	mov bl,20
 	call cll
 call kprint
 
-call reboot
+	waiting_for_pressing_space:
+			mov ax,0x0400
+		int 0x31
+			cmp al,0
+			je waiting_for_pressing_space
+		
+			;printing hexcode of scancode on the screen
+			;movzx ebp,bl
+		;call print_hex
+		
+			cmp bl,0x39 ;scancode 0x29 is key "space"
+		jnz waiting_for_pressing_space
 
-jmp $
+call reboot
 end_kernel:
 
 ;------------------
@@ -161,7 +172,7 @@ section .data
     paging_ready db 'mapped 4MiB RAM',0
     keyboard_init_text db 'init KEYBOARD',0
     keyboard_init_ready db 'KEYBOARD ready',0
-    reboot_text db 'reboot after hitting space',0
+    reboot_text db 'reboot after hitting "space"',0
     
     ;----Variables
     multibootstructure_offset dd 0
