@@ -14,7 +14,7 @@ DIR_CONTENT = $(CWD)/bin/content/kernel
 
 OBJECTS = $(patsubst $(DIR_SOURCE)/%.asm,$(DIR_OBJECT)/%_asm.o,$(shell find $(DIR_SOURCE) -iregex ".*\.asm"))
 
-.PHONY: all kernel image clean clean-little do-the-real-cleaning do-the-real-cleaning-little
+.PHONY: all kernel image test clean clean-little do-the-real-cleaning do-the-real-cleaning-little
 
 all: clean-little kernel image
 
@@ -41,6 +41,10 @@ $(DIR_CONTENT)/kernel.elf: $(OBJECTS)
 	@echo 'LD       $(patsubst $(DIR_CONTENT)/%,%,$@)'
 	@$(LD) $(LDFLAGS) -o $@ $(OBJECTS)
 	@$(STRIP) $(DIR_CONTENT)/kernel.elf
+
+test:
+	@echo 'test image with qemu'
+	@qemu -fda bin/floppy.img
 
 clean-little:
 	@$(MAKE) do-the-real-cleaning-little
