@@ -9,7 +9,7 @@ extern eoi
 extern print_hex
 
 ;extern variables
-extern scancode
+extern scancode ;in darkblackapi.asm
 extern ascii.api
 extern scancode_ger
 
@@ -38,16 +38,15 @@ keyboard_irq:
 
 ;the init code for the keyboard
 keyboard_init:
-    call keyboard.check
-    ;let the leds shine^^
-        mov al,0xED
-    out 0x60,al
-        mov al,0x7
-    out 0x60,al;let the leds shine
     
     call keyboard.check
+    
     ;reset the keyboard
         mov al,0xF4
+    out 0x60,al
+    
+    ;set repitition rate
+	mov al,0101000b
     out 0x60,al
 ret
 

@@ -135,7 +135,7 @@ mov edx,0x00000010
 call lsn
 ;call floppy_read
 
-;reboot after hitting a key
+;reboot after hitting space
 	mov esi,reboot_text
 	mov bl,21
 	call cll
@@ -159,9 +159,20 @@ push ax
 mov ebp, esp
 call print_hex
 
-;call reboot
+	waiting_for_pressing_space:
+			mov ax,0x0400
+		int 0x31
+			cmp al,0
+			je waiting_for_pressing_space
 
-jmp $
+			;printing hexcode of scancode on the screen
+			;movzx ebp,bl
+		;call print_hex
+
+			cmp bl,0x39 ;scancode 0x29 is key "space"
+		jnz waiting_for_pressing_space
+
+call reboot
 end_kernel:
 
 ;------------------
