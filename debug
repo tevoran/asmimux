@@ -1,0 +1,4 @@
+#!/bin/bash
+
+make && qemu-system-i386 -fda bin/floppy.img -s -S &
+gdb -x gdbcommands

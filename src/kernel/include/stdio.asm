@@ -97,7 +97,7 @@ bootscreen:
     mov esi,bootscreen.line8
     mov bl,8
     call kprint
-    
+
     ;print message
     mov esi,bootscreen.msg
     mov bl,19
@@ -115,7 +115,7 @@ ret
 	bootscreen.line7 db '                                 ...........',0
 	bootscreen.line8 db '--------------------------------------------------------------------------------',0
 	bootscreen.msg db 'latest kernel message:',0
-	
+
 
 ;print_hex
 ;ebp=the hexnumber of edx is printed on the screen
@@ -152,9 +152,84 @@ print_hex.function:
 	;if bl is a number not a char
 	add bl,0x30
 	jmp get_hex.end
-	
+
 	get_hex.ifABCDEF:
 	    add bl,0x37
 
 	get_hex.end:
+    ret
+
+
+; ksprintf function
+; sprintf-style function using C calling convention
+; currently supports:
+; %s zero-terminated string
+global ksprintf
+ksprintf:
+    push ebp
+    mov ebp, esp
+    push edi
+    push esi
+    push ebx
+
+    mov edi, [ebp+8]
+
+
+    mov esi, [ebp+12]
+
+    xor ebx, ebx ; use for parameter count
+    xor eax, eax
+
+    .start:
+        lodsb
+        cmp al, 0
+        je .store_end
+        cmp al, '%'
+        jne .store
+        lodsb
+        cmp al, '%'
+        je .store
+
+        ; handle parameter
+        mov ecx, esi
+        mov esi, [ebp+ebx*4+16]
+        inc ebx
+
+        cmp al, "s"
+        je .store_string
+        ;cmp al, "u"
+        ;je .store_unsigned
+        ;cmp al, "h"
+        ;je .store_hex
+
+        mov al, "%"
+        jmp .store
+
+
+    .store_string:
+        .store_string.start:
+            lodsb
+            cmp al, 0
+            je .store_string.end
+            stosb
+            jmp .store_string.start
+
+        .store_string.end:
+        mov esi, ecx
+        jmp .start
+
+    .store:
+        stosb
+        jmp .start
+
+    .store_end:
+        xor eax, eax
+        stosb
+
+    .end:
+    pop ebx
+    pop esi
+    pop edi
+    xor eax, eax
+    pop ebp
     ret

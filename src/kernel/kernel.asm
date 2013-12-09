@@ -23,6 +23,7 @@ extern floppy_init
 extern floppy_read
 extern lsn
 extern reboot
+extern ksprintf
 
 ;extern variables
 extern gdtp
@@ -38,7 +39,7 @@ section multiboot
 ;-----------------
 ;    .TEXT section
 ;-----------------
-section .text 
+section .text
 start_kernel:   ;<----- Entry Point to execute kernel
 ;get the Position of the Multibootstructure
 mov dword[multibootstructure_offset],ebx
@@ -122,7 +123,7 @@ call kprint
 call kprint
 
     call keyboard_init
-    
+
     mov esi,keyboard_init_ready
     mov bl,20
     call cll
@@ -136,20 +137,38 @@ call lsn
 
 ;reboot after hitting space
 	mov esi,reboot_text
-	mov bl,20
+	mov bl,21
 	call cll
 call kprint
+
+;push test_world
+push test_world
+push test_format
+push test_out
+call ksprintf
+add esp, 3*4
+
+mov esi,test_out
+mov bl,22
+call cll
+call kprint
+
+mov ebp, esp
+call print_hex
+push ax
+mov ebp, esp
+call print_hex
 
 	waiting_for_pressing_space:
 			mov ax,0x0400
 		int 0x31
 			cmp al,0
 			je waiting_for_pressing_space
-		
+
 			;printing hexcode of scancode on the screen
 			;movzx ebp,bl
 		;call print_hex
-		
+
 			cmp bl,0x39 ;scancode 0x29 is key "space"
 		jnz waiting_for_pressing_space
 
@@ -172,8 +191,10 @@ section .data
     paging_ready db 'mapped 4MiB RAM',0
     keyboard_init_text db 'init KEYBOARD',0
     keyboard_init_ready db 'KEYBOARD ready',0
-    reboot_text db 'reboot after hitting "space"',0
-    
+    reboot_text db 'reboot after hitting space',0
+    test_format db "hello %s",0
+    test_world db 'world',0
+    test_out times 12 db 0
+
     ;----Variables
     multibootstructure_offset dd 0
-    

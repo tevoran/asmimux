@@ -2,7 +2,7 @@ CWD = $(shell pwd)
 MAKE = make -s
 
 ASM=nasm
-ASMFLAGS = -f elf32
+ASMFLAGS = -f elf32 -g
 DIR_INCLUDE=-I $(DIR_SOURCE)/include
 STRIP=strip -s
 LD=ld
@@ -40,7 +40,7 @@ $(DIR_CONTENT):
 $(DIR_CONTENT)/kernel.elf: $(OBJECTS)
 	@echo 'LD       $(patsubst $(DIR_CONTENT)/%,%,$@)'
 	@$(LD) $(LDFLAGS) -o $@ $(OBJECTS)
-	@$(STRIP) $(DIR_CONTENT)/kernel.elf
+	#@$(STRIP) $(DIR_CONTENT)/kernel.elf
 
 test:
 	@echo 'test image with qemu'
