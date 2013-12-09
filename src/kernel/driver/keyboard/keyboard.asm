@@ -28,9 +28,9 @@ keyboard_irq:
 	mov al,byte[scancode_ger+ebx]
 	mov byte[ascii.api],al
 	;print the ascii sign on screen
-		mov bl,al
-		mov ax,0x0100
-		int 0x31
+		;mov bl,al
+		;mov ax,0x0100
+		;int 0x31
 		
 	keyboard_irq_end:
         call eoi;it is important to send the eoi signal to the pic
