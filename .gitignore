@@ -2,3 +2,4 @@
 /bin/floppy.img
 /obj/
 *~
+qemu-log/log.dat
